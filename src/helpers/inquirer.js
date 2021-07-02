@@ -49,7 +49,7 @@ const pause = async () => {
   await inquirer.prompt(question);
 }
 
-const createTaskMenu = async (message) => {
+const readInput = async (message) => {
 
   const question = [
     {
@@ -58,7 +58,7 @@ const createTaskMenu = async (message) => {
       message,
       validate(value) {
         if (value.length === 0) {
-          return 'Por favor ingrese un valor';
+          return 'Please write a city';
         }
         return true;
       }
@@ -150,7 +150,7 @@ const checkList = async (tasks = []) => {
 module.exports = {
   inquirerMenu,
   pause,
-  createTaskMenu,
+  readInput,
   TasksToDelete,
   confirm,
   checkList
