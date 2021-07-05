@@ -1,10 +1,13 @@
+const fs = require('fs');
 const axios = require('axios');
 const config = require('../config');
+
 
 class CityRepository {
 
   //Ejemplos de historial
-  historial = ['Buenos Aires', 'Mendoza', 'Brasilia'];
+  historial = [];
+  dbPath = 'src/db/database.json';
 
   constructor() {
     this.basePath = config.mapbox.basePath;
@@ -39,6 +42,31 @@ class CityRepository {
     } catch (error) {
       return [];
     }
+
+  }
+
+  addHistory(city = '') {
+    //Evitar duplicados
+    if (this.historial.includes(city.toLocaleLowerCase())) {
+      return;
+    }
+    //Agregar ciudad al historial
+    this.historial.unshift(city.toLocaleLowerCase());
+
+    //Guardar en DB
+    this.saveDB();
+  }
+
+  saveDB() {
+    const payloads = {
+      historial: this.historial
+    }
+
+    fs.writeFileSync(this.dbPath, JSON.stringify(payloads));
+
+  }
+
+  readDB() {
 
   }
 
