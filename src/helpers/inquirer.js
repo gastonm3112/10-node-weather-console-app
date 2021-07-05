@@ -49,7 +49,7 @@ const pause = async () => {
   await inquirer.prompt(question);
 }
 
-const createTaskMenu = async (message) => {
+const readInput = async (message) => {
 
   const question = [
     {
@@ -58,7 +58,7 @@ const createTaskMenu = async (message) => {
       message,
       validate(value) {
         if (value.length === 0) {
-          return 'Por favor ingrese un valor';
+          return 'Please write a city';
         }
         return true;
       }
@@ -71,15 +71,15 @@ const createTaskMenu = async (message) => {
 
 }
 
-const TasksToDelete = async (tasks = []) => {
+const listCities = async (cities = []) => {
 
-  const choices = tasks.map((task, i) => {
+  const choices = cities.map((city, i) => {
 
     const index = `${i + 1}.`.green
 
     return {
-      value: task.id,
-      name: `${index} ${task.description}`,
+      value: city.id,
+      name: `${index} ${city.name}`,
     }
 
   });
@@ -87,12 +87,13 @@ const TasksToDelete = async (tasks = []) => {
   choices.unshift({
     value: '0',
     name: '0.'.green + ' Cancelar'
-  })
+  });
+
   const questions = [
     {
       type: 'list',
       name: 'id',
-      message: 'delete',
+      message: 'Select a city',
       choices
     }
   ]
@@ -150,8 +151,8 @@ const checkList = async (tasks = []) => {
 module.exports = {
   inquirerMenu,
   pause,
-  createTaskMenu,
-  TasksToDelete,
+  readInput,
+  listCities,
   confirm,
   checkList
 }
