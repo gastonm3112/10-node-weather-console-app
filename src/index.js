@@ -33,6 +33,8 @@ const main = async () => {
         //Selecciona el lugar
         const idSelected = await listCities(places);
 
+        if (idSelected === '0') continue;
+
         const selectedPlace = places.find(place => place.id === idSelected);
         //Destructuración del lugar seleccionado
         const { name, lon, lat } = selectedPlace;
