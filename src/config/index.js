@@ -12,7 +12,7 @@ module.exports = {
     apikey: process.env.MAPBOX_API_KEY
   },
   openweather: {
-    basePath: 'api.openweathermap.org/data/2.5/weather',
+    basePath: 'https://api.openweathermap.org/data/2.5/weather',
     apikey: process.env.OPENWEATHER_API_KEY
   }
 }

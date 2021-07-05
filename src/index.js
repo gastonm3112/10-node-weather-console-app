@@ -6,6 +6,8 @@ const {
   listCities } = require('./helpers/inquirer');
 const CityRepository = require('./repositories/cityRepository');
 const cityRepository = new CityRepository();
+const WeatherRepository = require('./repositories/weatherRepository');
+const weatherRepository = new WeatherRepository();
 
 
 
@@ -30,20 +32,27 @@ const main = async () => {
 
         //Selecciona el lugar
         const idSelected = await listCities(places);
+
         const selectedPlace = places.find(place => place.id === idSelected);
         //Destructuración del lugar seleccionado
         const { name, lon, lat } = selectedPlace;
 
         //Buscar clima
+        const weather = await weatherRepository.getWeather(lat, lon);
+        //Destructuración datos del clima
+        const { desc, temp, min, max } = weather;
 
         //Mostrar resultados
+        console.clear();
         console.log('\nInformation of Citys\n'.green);
-        console.log('City: ', name);
+        console.log('City: ', name.green);
         console.log('Lon: ', lon);
         console.log('Lat: ', lat);
-        console.log('Temperature: ',);
-        console.log('Min. Temp: ',);
-        console.log('Max Temp: ',);
+        console.log('Weather description: ', desc.green);
+        console.log('Temperature: ', temp);
+        console.log('Min. Temp: ', min);
+        console.log('Max Temp: ', max);
+
         break;
     }
 
