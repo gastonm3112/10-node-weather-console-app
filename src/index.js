@@ -11,8 +11,6 @@ const weatherRepository = new WeatherRepository();
 
 
 
-
-
 const main = async () => {
 
   let option;
@@ -36,8 +34,13 @@ const main = async () => {
         if (idSelected === '0') continue;
 
         const selectedPlace = places.find(place => place.id === idSelected);
+
+        //Guardar en DB
+        cityRepository.addHistory(selectedPlace.name);
+
         //Destructuración del lugar seleccionado
         const { name, lon, lat } = selectedPlace;
+
 
         //Buscar clima
         const weather = await weatherRepository.getWeather(lat, lon);
@@ -56,6 +59,15 @@ const main = async () => {
         console.log('Max Temp: ', max);
 
         break;
+
+      case 2:
+        cityRepository.capitalizeHistory.forEach((place, i) => {
+          const index = `${i + 1}.`.green;
+          console.log(`${index} ${place} `);
+        });
+
+        break;
+
     }
 
     if (option !== 0) {
