@@ -1,9 +1,13 @@
 require('colors');
 const {
   inquirerMenu,
-  pause } = require('./helpers/inquirer');
-
-
+  pause,
+  readInput,
+  listCities } = require('./helpers/inquirer');
+const CityRepository = require('./repositories/cityRepository');
+const cityRepository = new CityRepository();
+const WeatherRepository = require('./repositories/weatherRepository');
+const weatherRepository = new WeatherRepository();
 
 
 
@@ -15,25 +19,62 @@ const main = async () => {
 
     option = await inquirerMenu();
 
+
+    switch (option) {
+      case 1:
+        //Mostrar mensaje
+        const searchCity = await readInput('City: ');
+
+        //Mostrar los lugares
+        const places = await cityRepository.findCities(searchCity);
+
+        //Selecciona el lugar
+        const idSelected = await listCities(places);
+
+        if (idSelected === '0') continue;
+
+        const selectedPlace = places.find(place => place.id === idSelected);
+
+        //Guardar en DB
+        cityRepository.addHistory(selectedPlace.name);
+
+        //Destructuración del lugar seleccionado
+        const { name, lon, lat } = selectedPlace;
+
+
+        //Buscar clima
+        const weather = await weatherRepository.getWeather(lat, lon);
+        //Destructuración datos del clima
+        const { desc, temp, min, max } = weather;
+
+        //Mostrar resultados
+        console.clear();
+        console.log('\nInformation of Citys\n'.green);
+        console.log('City: ', name.green);
+        console.log('Lon: ', lon);
+        console.log('Lat: ', lat);
+        console.log('Weather description: ', desc.green);
+        console.log('Temperature: ', temp);
+        console.log('Min. Temp: ', min);
+        console.log('Max Temp: ', max);
+
+        break;
+
+      case 2:
+        cityRepository.capitalizeHistory.forEach((place, i) => {
+          const index = `${i + 1}.`.green;
+          console.log(`${index} ${place} `);
+        });
+
+        break;
+
+    }
+
     if (option !== 0) {
       await pause();
     }
 
-    // switch (option) {
-    //   case 1:
-
-    //     break;
-
-    //   default:
-    //     console.log(`${'ERROR!'.red} option does not exist!`);
-    //     break;
-    // }
-
   } while (option !== 0);
-
-
-
-
 }
 
 
