@@ -61,7 +61,7 @@ const main = async () => {
         break;
 
       case 2:
-        cityRepository.historial.forEach((place, i) => {
+        cityRepository.capitalizeHistory.forEach((place, i) => {
           const index = `${i + 1}.`.green;
           console.log(`${index} ${place} `);
         });
